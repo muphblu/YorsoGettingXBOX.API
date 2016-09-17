@@ -19,20 +19,12 @@ namespace YorsoGettingXbox.Controllers
                 new DealEntity() {Description = "Description 1", Title = "Title 1", Id = 1},
                 new DealEntity() {Description = "Description 2", Title = "Title 2", Id = 2},
             };
-            /*var response = Request.CreateResponse(HttpStatusCode.OK);
-            response.Content = new StringContent(new JavaScriptSerializer().Serialize(deals), Encoding.UTF8, "application/json");
-            return response;*/
             return deals;
         }
 
         // GET: api/Deals/5
         public DealEntity Get(int id)
         {
-            /*var response = Request.CreateResponse(HttpStatusCode.OK);
-            response.Content = new StringContent(
-                new JavaScriptSerializer().Serialize(new DealEntity() { Description = "Description 1", Title = "Title 1", ID = 1 }), 
-                Encoding.UTF8, 
-                "application/json");*/
             return new DealEntity { Description = "Description 1", Title = "Title 1", Id = 1 };
         }
 
@@ -46,12 +38,6 @@ namespace YorsoGettingXbox.Controllers
                 new DocumentEntity() { Id = 2 },
                 new DocumentEntity() { Id = 3 },
             };
-
-            /*var response = Request.CreateResponse(HttpStatusCode.OK);
-            response.Content = new StringContent(
-                new JavaScriptSerializer().Serialize(documents), 
-                Encoding.UTF8, 
-                "application/json");*/
             return documents;
         }
 
