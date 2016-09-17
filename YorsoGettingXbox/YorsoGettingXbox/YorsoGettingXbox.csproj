@@ -146,7 +146,9 @@
     </Compile>
     <Compile Include="Models\DealEntity.cs" />
     <Compile Include="Models\DocumentEntity.cs" />
+    <Compile Include="Models\DocumentStatus.cs" />
     <Compile Include="Models\SignerEntity.cs" />
+    <Compile Include="Models\SignInfoEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
