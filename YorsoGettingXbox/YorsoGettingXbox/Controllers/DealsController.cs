@@ -41,9 +41,10 @@ namespace YorsoGettingXbox.Controllers
             return documents;
         }
 
-        // POST: api/Deals
-        public void Post([FromBody]string value)
+        // POST: api/deals
+        public void Post(DealEntity entity)
         {
+
         }
 
         // PUT: api/Deals/5
