@@ -42,9 +42,9 @@ namespace YorsoGettingXbox.Controllers
         }
 
         // POST: api/deals
-        public void Post(DealEntity entity)
+        public DealEntity Post(DealEntity entity)
         {
-
+            return entity;
         }
 
         // PUT: api/Deals/5
