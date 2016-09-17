@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
@@ -11,15 +13,13 @@ namespace YorsoGettingXbox.Controllers
 
     public class DealsController : ApiController
     {
+        public static IList<DealEntity> Deals;
+        public static int NextNum = 0;
+
         // GET: api/Deals
-        public DealEntity[] Get()
+        public IList<DealEntity> Get()
         {
-            var deals = new[]
-            {
-                new DealEntity() {Description = "Description 1", Title = "Title 1", Id = 1},
-                new DealEntity() {Description = "Description 2", Title = "Title 2", Id = 2},
-            };
-            return deals;
+            return Deals;
         }
 
         // GET: api/Deals/5
@@ -45,9 +45,15 @@ namespace YorsoGettingXbox.Controllers
         [HttpPost]
         public DealEntity Post([FromBody]DealEntity entity)
         {
-            entity.Id = 1;
+            if (NextNum == 0)
+            {
+                Deals = new List<DealEntity>();
+            }
+            entity.Id = NextNum;
             entity.ContractId = "123123123123123"; // get from Etherium
-            entity.Documents = new DocumentEntity[] {};
+            entity.Documents = new DocumentEntity[] { };
+            Deals.Add(entity);
+            NextNum++;
             return entity;
         }
 
