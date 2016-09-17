@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
@@ -33,6 +30,25 @@ namespace YorsoGettingXbox.Controllers
             var response = Request.CreateResponse(HttpStatusCode.OK);
             response.Content = new StringContent(
                 new JavaScriptSerializer().Serialize(new DealEntity() { Description = "Description 1", Title = "Title 1", ID = 1 }), 
+                Encoding.UTF8, 
+                "application/json");
+            return response;
+        }
+
+        // GET: api/deals/1/documents
+        [Route("{id:int}/documents")]
+        public HttpResponseMessage GetDealDocuments(int id)
+        {
+            var documents = new[]
+            {
+                new DocumentEntity() { ID = 1 },
+                new DocumentEntity() { ID = 2 },
+                new DocumentEntity() { ID = 3 },
+            };
+
+            var response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StringContent(
+                new JavaScriptSerializer().Serialize(documents), 
                 Encoding.UTF8, 
                 "application/json");
             return response;
