@@ -51,3 +51,4 @@ C:\Users\atrantin\Documents\Visual Studio 2015\Projects\YorsoGettingXBOX.API\Yor
 C:\Users\atrantin\Documents\Visual Studio 2015\Projects\YorsoGettingXBOX.API\YorsoGettingXbox\YorsoGettingXbox\bin\System.Web.Http.WebHost.xml
 C:\Users\atrantin\Documents\Visual Studio 2015\Projects\YorsoGettingXBOX.API\YorsoGettingXbox\YorsoGettingXbox\obj\Debug\YorsoGettingXbox.dll
 C:\Users\atrantin\Documents\Visual Studio 2015\Projects\YorsoGettingXBOX.API\YorsoGettingXbox\YorsoGettingXbox\obj\Debug\YorsoGettingXbox.pdb
+C:\Users\atrantin\Documents\Visual Studio 2015\Projects\YorsoGettingXBOX.API\YorsoGettingXbox\YorsoGettingXbox\obj\Debug\YorsoGettingXbox.csprojResolveAssemblyReference.cache
