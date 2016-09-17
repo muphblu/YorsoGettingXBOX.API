@@ -45,6 +45,9 @@ namespace YorsoGettingXbox.Controllers
         [HttpPost]
         public DealEntity Post([FromBody]DealEntity entity)
         {
+            entity.Id = 1;
+            entity.ContractId = "123123123123123"; // get from Etherium
+            entity.Documents = new DocumentEntity[] {};
             return entity;
         }
 
