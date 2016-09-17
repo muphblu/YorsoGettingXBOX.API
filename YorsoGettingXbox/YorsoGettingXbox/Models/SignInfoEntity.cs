@@ -11,6 +11,5 @@ namespace YorsoGettingXbox.Models
         public SignerEntity Signer { get; set; }
         public bool IsSigned { get; set; }
         public string TransactionId { get; set; }
-
     }
 }
