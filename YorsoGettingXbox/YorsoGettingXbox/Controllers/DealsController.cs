@@ -15,32 +15,33 @@ namespace YorsoGettingXbox.Controllers
     public class DealsController : ApiController
     {
         // GET: api/Deals
-        public HttpResponseMessage Get()
+        public DealEntity[] Get()
         {
             var deals = new[]
             {
                 new DealEntity() {Description = "Description 1", Title = "Title 1", Id = 1},
                 new DealEntity() {Description = "Description 2", Title = "Title 2", Id = 2},
             };
-            var response = Request.CreateResponse(HttpStatusCode.OK);
+            /*var response = Request.CreateResponse(HttpStatusCode.OK);
             response.Content = new StringContent(new JavaScriptSerializer().Serialize(deals), Encoding.UTF8, "application/json");
-            return response;
+            return response;*/
+            return deals;
         }
 
         // GET: api/Deals/5
-        public HttpResponseMessage Get(int id)
+        public DealEntity Get(int id)
         {
-            var response = Request.CreateResponse(HttpStatusCode.OK);
+            /*var response = Request.CreateResponse(HttpStatusCode.OK);
             response.Content = new StringContent(
                 new JavaScriptSerializer().Serialize(new DealEntity() { Description = "Description 1", Title = "Title 1", Id = 1 }), 
                 Encoding.UTF8, 
-                "application/json");
-            return response;
+                "application/json");*/
+            return new DealEntity { Description = "Description 1", Title = "Title 1", ID = 1 };
         }
 
         // GET: api/deals/1/documents
         [Route("{id:int}/documents")]
-        public HttpResponseMessage GetDealDocuments(int id)
+        public DocumentEntity[] GetDealDocuments(int id)
         {
             var documents = new[]
             {
@@ -49,12 +50,12 @@ namespace YorsoGettingXbox.Controllers
                 new DocumentEntity() { Id = 3 },
             };
 
-            var response = Request.CreateResponse(HttpStatusCode.OK);
+            /*var response = Request.CreateResponse(HttpStatusCode.OK);
             response.Content = new StringContent(
                 new JavaScriptSerializer().Serialize(documents), 
                 Encoding.UTF8, 
-                "application/json");
-            return response;
+                "application/json");*/
+            return documents;
         }
 
         [Route("{id:int}/documents")]
