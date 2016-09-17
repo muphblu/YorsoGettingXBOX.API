@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
+using System.Security.Policy;
 using System.Text;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 using YorsoGettingXbox.Models;
 
 namespace YorsoGettingXbox.Controllers
@@ -31,15 +36,54 @@ namespace YorsoGettingXbox.Controllers
 
         // GET: api/deals/1/documents
         [Route("{id:int}/documents")]
-        public DocumentEntity[] GetDealDocuments(int id)
+        public IList<DocumentEntity> GetDealDocuments(int id)
         {
-            var documents = new[]
+            var deal = Deals[id];
+            return deal.Documents;
+        }
+
+        // POST: api/deals/1/documents
+        [Route("{id:int}/documents")]
+        public async Task<HttpResponseMessage> PostDealDocuments(int id)
+        {
+            // Check if the request contains multipart/form-data.
+            if (!Request.Content.IsMimeMultipartContent())
             {
-                new DocumentEntity() { Id = 1 },
-                new DocumentEntity() { Id = 2 },
-                new DocumentEntity() { Id = 3 },
-            };
-            return documents;
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+            }
+
+            var deal = Deals[id];
+
+            var root = HttpContext.Current.Server.MapPath("~/App_Data");
+            var provider = new MultipartFormDataStreamProvider(root);
+
+            try
+            {
+                // Read the form data.
+                await Request.Content.ReadAsMultipartAsync(provider);
+
+                // This illustrates how to get the file names.
+                foreach (var file in provider.FileData)
+                {
+                    Trace.WriteLine(file.Headers.ContentDisposition.FileName);
+                    Trace.WriteLine("Server file path: " + file.LocalFileName);
+                    var doc = new DocumentEntity()
+                    {
+                        Hash = "Hash", // calculate md5
+                        Id = 1,
+                        Link = file.LocalFileName,
+                        Name = file.Headers.ContentDisposition.FileName
+                    };
+                    deal.Documents.Add(doc);
+                }
+                var response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(new JavaScriptSerializer().Serialize(deal), Encoding.UTF8, "application/json");
+                return response;
+            }
+            catch (System.Exception e)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
+            }
         }
 
         // POST: api/deals
