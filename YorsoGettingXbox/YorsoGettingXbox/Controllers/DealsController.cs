@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,7 +34,8 @@ namespace YorsoGettingXbox.Controllers
         // GET: api/Deals/5
         public DealEntity Get(int id)
         {
-            return new DealEntity { Description = "Description 1", Title = "Title 1", Id = 1 };
+            var deal = Deals[id];
+            return deal;
         }
 
         // GET: api/deals/1/documents
@@ -53,8 +57,7 @@ namespace YorsoGettingXbox.Controllers
             }
 
             var deal = Deals[id];
-
-            var root = HttpContext.Current.Server.MapPath("~/App_Data");
+            var root = HttpContext.Current.Server.MapPath("~/Files");
             var provider = new MultipartFormDataStreamProvider(root);
 
             try
@@ -65,15 +68,35 @@ namespace YorsoGettingXbox.Controllers
                 // This illustrates how to get the file names.
                 foreach (var file in provider.FileData)
                 {
-                    Trace.WriteLine(file.Headers.ContentDisposition.FileName);
-                    Trace.WriteLine("Server file path: " + file.LocalFileName);
                     var doc = new DocumentEntity()
                     {
-                        Hash = "Hash", // calculate md5
                         Id = 1,
-                        Link = file.LocalFileName,
                         Name = file.Headers.ContentDisposition.FileName
                     };
+                    string fileName;
+
+                    using (var md5 = MD5.Create())
+                    {
+                        using (var stream = File.OpenRead(file.LocalFileName))
+                        {
+                            doc.Hash = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "");
+                            var fileExtPos = doc.Name.LastIndexOf(".", StringComparison.Ordinal);
+                            if (fileExtPos >= 0)
+                            {
+                                fileName = doc.Hash + doc.Name.Substring(fileExtPos, doc.Name.Length-fileExtPos-1);
+                            }
+                            else
+                            {
+                                continue; // dont upload files without extension
+                            }
+
+                            doc.Link = "/Files/" + fileName; // just for tests the extension
+                        }
+                    }
+                    //do not upload twice
+                    if (File.Exists(root + "/" + fileName)) continue;
+
+                    File.Move(file.LocalFileName, root + "/" + fileName);
                     deal.Documents.Add(doc);
                 }
                 var response = Request.CreateResponse(HttpStatusCode.OK);
@@ -92,7 +115,7 @@ namespace YorsoGettingXbox.Controllers
         {
             entity.Id = NextNum;
             entity.ContractId = "123123123123123"; // get from Etherium
-            entity.Documents = new DocumentEntity[] { };
+            entity.Documents = new List<DocumentEntity>();
             Deals.Add(entity);
             return entity;
         }
