@@ -9,6 +9,7 @@ namespace YorsoGettingXbox.Models
     {
         public int Id { get; set; }
         public int Name { get; set; }
+        public string Link { get; set; }
         public SignInfoEntity[] SignInfo { get; set; }
     }
 }
