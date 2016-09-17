@@ -68,23 +68,35 @@ namespace YorsoGettingXbox.Controllers
                 // This illustrates how to get the file names.
                 foreach (var file in provider.FileData)
                 {
-                    Trace.WriteLine(file.Headers.ContentDisposition.FileName);
-                    Trace.WriteLine("Server file path: " + file.LocalFileName);
                     var doc = new DocumentEntity()
                     {
                         Id = 1,
                         Name = file.Headers.ContentDisposition.FileName
                     };
+                    string fileName;
+
                     using (var md5 = MD5.Create())
                     {
                         using (var stream = File.OpenRead(file.LocalFileName))
                         {
                             doc.Hash = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "");
-                            doc.Link = "/Files/" + doc.Hash + ".txt"; // just for tests the extension
+                            var fileExtPos = doc.Name.LastIndexOf(".", StringComparison.Ordinal);
+                            if (fileExtPos >= 0)
+                            {
+                                fileName = doc.Hash + doc.Name.Substring(fileExtPos, doc.Name.Length-fileExtPos-1);
+                            }
+                            else
+                            {
+                                continue; // dont upload files without extension
+                            }
+
+                            doc.Link = "/Files/" + fileName; // just for tests the extension
                         }
                     }
-                    File.Move(file.LocalFileName, root + "/" + doc.Hash + ".txt");
+                    //do not upload twice
+                    if (File.Exists(root + "/" + fileName)) continue;
 
+                    File.Move(file.LocalFileName, root + "/" + fileName);
                     deal.Documents.Add(doc);
                 }
                 var response = Request.CreateResponse(HttpStatusCode.OK);
