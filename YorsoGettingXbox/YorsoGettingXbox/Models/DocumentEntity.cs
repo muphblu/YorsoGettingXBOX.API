@@ -7,6 +7,6 @@ namespace YorsoGettingXbox.Models
 {
     public class DocumentEntity
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
     }
 }
