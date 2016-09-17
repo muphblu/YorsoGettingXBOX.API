@@ -8,7 +8,7 @@ namespace YorsoGettingXbox.Models
     public class DocumentEntity
     {
         public int Id { get; set; }
-        public int Name { get; set; }
+        public string Name { get; set; }
         public string Link { get; set; }
         public SignInfoEntity[] SignInfo { get; set; }
         public DocumentStatus Status { get; set; }
