@@ -147,6 +147,7 @@
     <Compile Include="Models\DealEntity.cs" />
     <Compile Include="Models\DocumentEntity.cs" />
     <Compile Include="Models\SignerEntity.cs" />
+    <Compile Include="Models\SignInfoEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -155,7 +156,6 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Properties\PublishProfiles\we-need-xbox - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
