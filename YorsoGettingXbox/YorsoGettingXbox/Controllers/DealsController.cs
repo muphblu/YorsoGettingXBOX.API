@@ -57,11 +57,6 @@ namespace YorsoGettingXbox.Controllers
             }
 
             var deal = Deals[id];
-            if (deal.Documents == null)
-            {
-                deal.Documents = new List<DocumentEntity>();
-            }
-
             var root = HttpContext.Current.Server.MapPath("~/Files");
             var provider = new MultipartFormDataStreamProvider(root);
 
@@ -85,10 +80,10 @@ namespace YorsoGettingXbox.Controllers
                         using (var stream = File.OpenRead(file.LocalFileName))
                         {
                             doc.Hash = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "");
-                            doc.Link = "/Files/" + doc.Hash;
+                            doc.Link = "/Files/" + doc.Hash + ".txt"; // just for tests the extension
                         }
                     }
-                    File.Move(file.LocalFileName, root + "/" + doc.Hash);
+                    File.Move(file.LocalFileName, root + "/" + doc.Hash + ".txt");
 
                     deal.Documents.Add(doc);
                 }
@@ -108,7 +103,7 @@ namespace YorsoGettingXbox.Controllers
         {
             entity.Id = NextNum;
             entity.ContractId = "123123123123123"; // get from Etherium
-            entity.Documents = new DocumentEntity[] { };
+            entity.Documents = new List<DocumentEntity>();
             Deals.Add(entity);
             return entity;
         }
