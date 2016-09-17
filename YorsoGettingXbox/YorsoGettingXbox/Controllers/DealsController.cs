@@ -42,7 +42,8 @@ namespace YorsoGettingXbox.Controllers
         }
 
         // POST: api/deals
-        public DealEntity Post(DealEntity entity)
+        [HttpPost]
+        public DealEntity Post([FromBody]DealEntity entity)
         {
             return entity;
         }
