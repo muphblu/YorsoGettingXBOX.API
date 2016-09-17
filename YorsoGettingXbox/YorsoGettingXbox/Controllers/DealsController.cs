@@ -62,5 +62,11 @@ namespace YorsoGettingXbox.Controllers
         public void Delete(int id)
         {
         }
+
+        [Route("sign")]
+        public SignInfoEntity Sign(SignInfoEntity signInfoEntity)
+        {
+            return signInfoEntity;
+        }
     }
 }
