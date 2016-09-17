@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,7 +34,8 @@ namespace YorsoGettingXbox.Controllers
         // GET: api/Deals/5
         public DealEntity Get(int id)
         {
-            return new DealEntity { Description = "Description 1", Title = "Title 1", Id = 1 };
+            var deal = Deals[id];
+            return deal;
         }
 
         // GET: api/deals/1/documents
@@ -53,8 +57,12 @@ namespace YorsoGettingXbox.Controllers
             }
 
             var deal = Deals[id];
+            if (deal.Documents == null)
+            {
+                deal.Documents = new List<DocumentEntity>();
+            }
 
-            var root = HttpContext.Current.Server.MapPath("~/App_Data");
+            var root = HttpContext.Current.Server.MapPath("~/Files");
             var provider = new MultipartFormDataStreamProvider(root);
 
             try
@@ -69,11 +77,19 @@ namespace YorsoGettingXbox.Controllers
                     Trace.WriteLine("Server file path: " + file.LocalFileName);
                     var doc = new DocumentEntity()
                     {
-                        Hash = "Hash", // calculate md5
                         Id = 1,
-                        Link = file.LocalFileName,
                         Name = file.Headers.ContentDisposition.FileName
                     };
+                    using (var md5 = MD5.Create())
+                    {
+                        using (var stream = File.OpenRead(file.LocalFileName))
+                        {
+                            doc.Hash = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "");
+                            doc.Link = "/Files/" + doc.Hash;
+                        }
+                    }
+                    File.Move(file.LocalFileName, root + "/" + doc.Hash);
+
                     deal.Documents.Add(doc);
                 }
                 var response = Request.CreateResponse(HttpStatusCode.OK);
