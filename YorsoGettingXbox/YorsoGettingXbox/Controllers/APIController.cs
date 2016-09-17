@@ -1,6 +1,9 @@
 ﻿using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web.Http;
+using System.Web.Script.Serialization;
+using YorsoGettingXbox.Models;
 
 namespace YorsoGettingXbox.Controllers
 {
@@ -8,12 +11,6 @@ namespace YorsoGettingXbox.Controllers
     {
         [HttpPost]
         public HttpResponseMessage UploadDocument()
-        {
-            return new HttpResponseMessage(HttpStatusCode.Accepted);
-        }
-
-        [HttpGet]
-        public HttpResponseMessage Deals()
         {
             return new HttpResponseMessage(HttpStatusCode.Accepted);
         }
