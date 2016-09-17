@@ -18,8 +18,9 @@ namespace YorsoGettingXbox.Controllers
 
     public class DealsController : ApiController
     {
-        public static IList<DealEntity> Deals;
-        public static int NextNum = 0;
+        private static int _nextNum;
+        public static IList<DealEntity> Deals = new List<DealEntity>();
+        public static int NextNum => _nextNum++;
 
         // GET: api/Deals
         public IList<DealEntity> Get()
@@ -89,15 +90,10 @@ namespace YorsoGettingXbox.Controllers
         [HttpPost]
         public DealEntity Post([FromBody]DealEntity entity)
         {
-            if (NextNum == 0)
-            {
-                Deals = new List<DealEntity>();
-            }
             entity.Id = NextNum;
             entity.ContractId = "123123123123123"; // get from Etherium
             entity.Documents = new DocumentEntity[] { };
             Deals.Add(entity);
-            NextNum++;
             return entity;
         }
 
