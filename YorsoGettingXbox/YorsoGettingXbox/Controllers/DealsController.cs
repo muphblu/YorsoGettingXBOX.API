@@ -19,8 +19,8 @@ namespace YorsoGettingXbox.Controllers
         {
             var deals = new[]
             {
-                new DealEntity() {Description = "Description 1", Title = "Title 1", ID = 1},
-                new DealEntity() {Description = "Description 2", Title = "Title 2", ID = 2},
+                new DealEntity() {Description = "Description 1", Title = "Title 1", Id = 1},
+                new DealEntity() {Description = "Description 2", Title = "Title 2", Id = 2},
             };
             var response = Request.CreateResponse(HttpStatusCode.OK);
             response.Content = new StringContent(new JavaScriptSerializer().Serialize(deals), Encoding.UTF8, "application/json");
@@ -32,7 +32,7 @@ namespace YorsoGettingXbox.Controllers
         {
             var response = Request.CreateResponse(HttpStatusCode.OK);
             response.Content = new StringContent(
-                new JavaScriptSerializer().Serialize(new DealEntity() { Description = "Description 1", Title = "Title 1", ID = 1 }), 
+                new JavaScriptSerializer().Serialize(new DealEntity() { Description = "Description 1", Title = "Title 1", Id = 1 }), 
                 Encoding.UTF8, 
                 "application/json");
             return response;
@@ -44,9 +44,9 @@ namespace YorsoGettingXbox.Controllers
         {
             var documents = new[]
             {
-                new DocumentEntity() { ID = 1 },
-                new DocumentEntity() { ID = 2 },
-                new DocumentEntity() { ID = 3 },
+                new DocumentEntity() { Id = 1 },
+                new DocumentEntity() { Id = 2 },
+                new DocumentEntity() { Id = 3 },
             };
 
             var response = Request.CreateResponse(HttpStatusCode.OK);
