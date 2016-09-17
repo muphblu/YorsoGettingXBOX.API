@@ -9,5 +9,8 @@ namespace YorsoGettingXbox.Models
     {
         public DateTime SignDate { get; set; }
         public SignerEntity Signer { get; set; }
+        public bool IsSigned { get; set; }
+        public string TransactionId { get; set; }
+
     }
 }
