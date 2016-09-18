@@ -56,7 +56,7 @@ namespace YorsoGettingXbox.Controllers
         // GET: api/Deals/5
         public DealEntity Get(int id)
         {
-            if (Deals.Count < id || !Deals.Any())
+            if (!Deals.Any() || Deals.Count < id)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
@@ -206,6 +206,8 @@ namespace YorsoGettingXbox.Controllers
             }
 
             var doc = deal.Documents[docid];
+            var usersToAdd = new List<string>(EtherumUsers); // just a copy
+       
             foreach (var user in EtherumUsers)
             {
                 var signatureToSign = new SignInfoEntity()
@@ -224,16 +226,34 @@ namespace YorsoGettingXbox.Controllers
                     doc.SignInfo.Add(signatureToSign);
                     return deal;
                 }
+                
                 //get the first user which is not exist
                 foreach (var sign in doc.SignInfo)
                 {
-                    if (!sign.Signer.Name.Equals(user))
+                    if (usersToAdd.Contains(sign.Signer.PublicKey))
                     {
-                        doc.SignInfo.Add(signatureToSign);
-                        return deal;
+                        usersToAdd.RemoveAt(usersToAdd.IndexOf(sign.Signer.PublicKey));
                     }
                 }
             }
+
+            if (usersToAdd.Any())
+            {
+                var eachUser = usersToAdd[0];
+                var addSignInfo = new SignInfoEntity()
+                {
+                    IsSigned = false,
+                    SignDate = null,
+                    Signer = new SignerEntity()
+                    {
+                        Id = 0,
+                        Name = eachUser,
+                        PublicKey = eachUser
+                    }
+                };
+                doc.SignInfo.Add(addSignInfo);
+            }
+            
             return deal;
         }
 
