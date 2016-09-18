@@ -205,8 +205,9 @@ namespace YorsoGettingXbox.Controllers
         {
         }
 
-        [Route("sign")]
-        public SignInfoEntity Sign(SignInfoEntity signInfoEntity)
+        [Route("{dealid:int}/documents/{docid:int}/sign")]
+        [HttpPost]
+        public SignInfoEntity Sign(int dealid, int docid, SignInfoEntity signInfoEntity)
         {
             return signInfoEntity;
         }
