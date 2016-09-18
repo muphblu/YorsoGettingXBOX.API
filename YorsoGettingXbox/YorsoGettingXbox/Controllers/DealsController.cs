@@ -201,6 +201,27 @@ namespace YorsoGettingXbox.Controllers
         public IList<DealEntity> GetPendingDocuments()
         {
             var response = new List<DealEntity>();
+            foreach (var deal in Deals)
+            {
+                var dealDocs = new List<DocumentEntity>();
+                foreach (var doc in deal.Documents)
+                {
+                    if (doc.Status == DocumentStatus.Verified)
+                    {
+                        continue;
+                    }
+                    dealDocs.Add(doc);
+                }
+                if (dealDocs.Any())
+                {
+                    response.Add(new DealEntity()
+                    {
+                        ContractId = deal.ContractId,
+                        Id = deal.Id,
+                        Documents = dealDocs
+                    });
+                }
+            }
             return response;
         }
     }
