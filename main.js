@@ -75,14 +75,10 @@ function deployContract(participants, contractId) {
             gas: 2000000
         }, function (e, contract) {
             var result = web3.eth.getTransactionReceipt(deal.transactionHash);
-            console.log(result);
-            console.log(contract.transactionHash);
 
             while (result == null) {
                 result = web3.eth.getTransactionReceipt(deal.transactionHash);
-                console.log("sleep");
                 sleep(5000);
-                console.log("sleep over");
             }
             console.log(result);
             contract.address = result.contractAddress;
@@ -131,6 +127,8 @@ function signDocument(contractId, documentId, documentHash, dealId, signer) {
                 IsSigned: true,
                 TransactionId: transactionId
             }
+        }, function(err,res,body){
+            console.log("Document signed contract:" + contractId + " docId:" + documentId + " docHash:" +documentHash + " dealId:" + dealId);
         })
     }, 15000);
 }
