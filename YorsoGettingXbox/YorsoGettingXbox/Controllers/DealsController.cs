@@ -146,21 +146,6 @@ namespace YorsoGettingXbox.Controllers
                     };
 
                     File.Move(file.LocalFileName, newFullPath);
-                    doc.SignInfo = new List<SignInfoEntity>();
-                    foreach (var user in EtherumUsers)
-                    {
-                        doc.SignInfo.Add(new SignInfoEntity()
-                        {
-                            IsSigned = false,
-                            SignDate = null,
-                            Signer = new SignerEntity()
-                            {
-                                Id = 0,
-                                Name = user,
-                                PublicKey = user
-                            }
-                        });
-                    }
                     deal.Documents.Add(doc);
                 }
                 resultCode = HttpStatusCode.OK;
@@ -205,11 +190,51 @@ namespace YorsoGettingXbox.Controllers
         {
         }
 
+        // POST: api/Deals/5/documents/1/sign
         [Route("{dealid:int}/documents/{docid:int}/sign")]
-        [HttpPost]
-        public SignInfoEntity Sign(int dealid, int docid, SignInfoEntity signInfoEntity)
+        public DealEntity PostSign(int dealid, int docid)
         {
-            return signInfoEntity;
+            if (Deals.Count < dealid || !Deals.Any())
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            var deal = Deals[dealid];
+            if (deal.Documents.Count < docid || !deal.Documents.Any())
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            var doc = deal.Documents[docid];
+            foreach (var user in EtherumUsers)
+            {
+                var signatureToSign = new SignInfoEntity()
+                {
+                    IsSigned = false,
+                    SignDate = null,
+                    Signer = new SignerEntity()
+                    {
+                        Id = 0,
+                        Name = user,
+                        PublicKey = user
+                    }
+                };
+                if (!doc.SignInfo.Any())
+                {
+                    doc.SignInfo.Add(signatureToSign);
+                    return deal;
+                }
+                //get the first user which is not exist
+                foreach (var sign in doc.SignInfo)
+                {
+                    if (!sign.Signer.Name.Equals(user))
+                    {
+                        doc.SignInfo.Add(signatureToSign);
+                        return deal;
+                    }
+                }
+            }
+            return deal;
         }
 
         // GET: api/Deals/documents/pending
