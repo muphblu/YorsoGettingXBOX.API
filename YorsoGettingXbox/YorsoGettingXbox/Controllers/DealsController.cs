@@ -146,6 +146,21 @@ namespace YorsoGettingXbox.Controllers
                     };
 
                     File.Move(file.LocalFileName, newFullPath);
+                    doc.SignInfo = new List<SignInfoEntity>();
+                    foreach (var user in EtherumUsers)
+                    {
+                        doc.SignInfo.Add(new SignInfoEntity()
+                        {
+                            IsSigned = false,
+                            SignDate = null,
+                            Signer = new SignerEntity()
+                            {
+                                Id = 0,
+                                Name = user,
+                                PublicKey = user
+                            }
+                        });
+                    }
                     deal.Documents.Add(doc);
                 }
                 resultCode = HttpStatusCode.OK;
