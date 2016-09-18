@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">YorsoGettingXbox</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_documents">DocumentsActivity</string>
+    <string name="prod">Producer:</string>
+    <string name="check">In blockchain:</string>
+    <string name="text_overall_status">Overall status</string>
+    <string name="text_in_blockchain">In blockchain</string>
+    <string name="text_not_in_bllockchain">Not in blockchain yet</string>
+
+    //AddingDealActivity
+    <string name="submit">submit data</string>
+    <string name="prompt_about_Title">Deal title</string>
+    <string name="prompt_about_Description">Deal description</string>
+
+    //Signers
+    <string name="text_signer">Signer</string>
+    <string name="signed">Signed</string>
+    <string name="not_signed">Document not signed yet</string>
+
+    <array name="titles">
+        <item> Bying some fruit</item>
+        <item> Bying some drinks</item>
+        <item> delivery Agreement</item>
+        <item> Certificate</item>
+        <item> Transaction №1212</item>
+        <item> Contract</item>
+        <item> Application for contract</item>
+    </array>
+
+    <array name="desctription">
+        <item>We would to buy any froot</item>
+        <item>We would to buy any froot</item>
+        <item>We would to buy any froot</item>
+        <item>We would to buy any drinks</item>
+        <item>We would to transfer to you, without</item>
+        <item>We would to send you the paper about our transaction</item>
+        <item>We would to buy any froot</item>
+    </array>
+</resources>

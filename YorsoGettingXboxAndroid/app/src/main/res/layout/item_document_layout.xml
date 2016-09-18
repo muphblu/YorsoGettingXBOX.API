@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/view_document"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_vertical_margin"
+    >
+
+    <TextView
+        android:id="@+id/text_document_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/font_big"
+        tools:text="Some document"
+        />
+
+
+    <TextView
+        android:id="@+id/text_document_blockchain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/text_document_name"
+        android:text="@string/text_in_blockchain"
+        />
+
+    <TextView
+        android:id="@+id/text_overall_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/text_document_blockchain"
+        android:text="@string/text_overall_status"
+        />
+
+    <!--<ImageView-->
+        <!--android:id="@+id/image_document_status"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_above="@+id/number_progress_bar"-->
+        <!--android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
+        <!--android:layout_alignLeft="@+id/number_progress_bar"-->
+        <!--android:src="@drawable/ic_check_circle_black_24dp"-->
+        <!--/>-->
+
+
+    <com.daimajia.numberprogressbar.NumberProgressBar
+        android:id="@+id/number_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/text_overall_status"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_toEndOf="@+id/text_document_blockchain"
+        app:progress_reached_bar_height="14dp"
+        app:progress_unreached_bar_height="14dp"
+        tools:ignore="RtlHardcoded"
+        />
+
+
+</RelativeLayout>
