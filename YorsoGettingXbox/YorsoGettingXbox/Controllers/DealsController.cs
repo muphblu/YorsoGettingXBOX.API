@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
-using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Script.Serialization;
-using Newtonsoft.Json;
 using YorsoGettingXbox.Models;
 
 namespace YorsoGettingXbox.Controllers
@@ -107,7 +103,7 @@ namespace YorsoGettingXbox.Controllers
                 response.Content = new StringContent(new JavaScriptSerializer().Serialize(deal), Encoding.UTF8, "application/json");
                 return response;
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
             }
