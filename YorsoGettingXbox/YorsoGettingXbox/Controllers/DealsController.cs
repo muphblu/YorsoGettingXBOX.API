@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -264,6 +265,19 @@ namespace YorsoGettingXbox.Controllers
                 }
             }
             return response;
+        }
+
+        [Route("files/{filename}")]
+        [HttpGet]
+        public HttpResponseMessage GetFile(string filename)
+        {
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            var path = HttpContext.Current.Server.MapPath("~/Files/"+filename);
+            var stream = new FileStream(path, FileMode.Open);
+            result.Content = new StreamContent(stream);
+            result.Content.Headers.ContentType =
+                new MediaTypeHeaderValue("application/octet-stream");
+            return result;
         }
     }
 }
