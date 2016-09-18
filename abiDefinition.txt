@@ -1,0 +1,39 @@
+abiDefinition: [{
+      constant: false,
+      inputs: [{...}, {...}, {...}],
+      name: "addDocument",
+      outputs: [{...}],
+      payable: false,
+      type: "function"
+  }, {
+      constant: false,
+      inputs: [{...}],
+      name: "signDocument",
+      outputs: [{...}],
+      payable: false,
+      type: "function"
+  }, {
+      constant: true,
+      inputs: [{...}],
+      name: "_documents",
+      outputs: [{...}, {...}],
+      payable: false,
+      type: "function"
+  }, {
+      constant: true,
+      inputs: [{...}],
+      name: "check",
+      outputs: [{...}],
+      payable: false,
+      type: "function"
+  }, {
+      constant: true,
+      inputs: [{...}],
+      name: "_participants",
+      outputs: [{...}],
+      payable: false,
+      type: "function"
+  }, {
+      inputs: [{...}],
+      type: "constructor"
+  }]
