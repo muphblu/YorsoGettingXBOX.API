@@ -31,6 +31,11 @@ namespace YorsoGettingXbox.Controllers
         // GET: api/Deals/5
         public DealEntity Get(int id)
         {
+            if (Deals.Count < id || !Deals.Any())
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
             var deal = Deals[id];
             return deal;
         }
