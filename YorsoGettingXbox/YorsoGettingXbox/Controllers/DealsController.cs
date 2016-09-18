@@ -247,11 +247,14 @@ namespace YorsoGettingXbox.Controllers
                 var dealDocs = new List<DocumentEntity>();
                 foreach (var doc in deal.Documents)
                 {
-                    if (doc.Status == DocumentStatus.Verified)
+                    foreach (var sign in doc.SignInfo)
                     {
-                        continue;
+                        if (!sign.IsSigned)
+                        {
+                            dealDocs.Add(doc);
+                            break;
+                        }
                     }
-                    dealDocs.Add(doc);
                 }
                 if (dealDocs.Any())
                 {
@@ -264,6 +267,34 @@ namespace YorsoGettingXbox.Controllers
                 }
             }
             return response;
+        }
+
+        // POST: api/Deals/5/documents/1/sign
+        [Route("{dealid:int}/documents/{docid:int}/signed")]
+        public DealEntity PostSigned(int dealid, int docid, [FromBody] SignInfoEntity signInfo)
+        {
+            if (Deals.Count < dealid || !Deals.Any())
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            var deal = Deals[dealid];
+            if (deal.Documents.Count < docid || !deal.Documents.Any())
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            var doc = deal.Documents[docid];
+            foreach (var sign in doc.SignInfo)
+            {
+                if (sign.Signer.PublicKey.Equals(signInfo.Signer.PublicKey))
+                {
+                    sign.IsSigned = true;
+                    sign.SignDate = DateTime.UtcNow.ToString();
+                    sign.TransactionId = signInfo.TransactionId;
+                }
+            }
+            return deal;
         }
     }
 }
