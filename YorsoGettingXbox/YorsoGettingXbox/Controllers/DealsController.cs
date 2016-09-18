@@ -93,10 +93,14 @@ namespace YorsoGettingXbox.Controllers
                             doc.Link = "/Files/" + fileName; // just for tests the extension
                         }
                     }
-                    //do not upload twice
-                    if (File.Exists(root + "/" + fileName)) continue;
+                    //replace the same file
+                    var newFullPath = root + "/" + fileName;
+                    if (File.Exists(newFullPath))
+                    {
+                        File.Delete(newFullPath);
+                    };
 
-                    File.Move(file.LocalFileName, root + "/" + fileName);
+                    File.Move(file.LocalFileName, newFullPath);
                     deal.Documents.Add(doc);
                 }
                 var response = Request.CreateResponse(HttpStatusCode.OK);
