@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Script.Serialization;
+using System.Web.WebPages;
 using YorsoGettingXbox.Models;
 
 namespace YorsoGettingXbox.Controllers
@@ -23,6 +24,21 @@ namespace YorsoGettingXbox.Controllers
         private static int _nextNum;
         public static IList<DealEntity> Deals = new List<DealEntity>();
         public static int NextNum => _nextNum++;
+
+        // GET: api/Deals/pending
+        [Route("pending")]
+        public IList<DealEntity> GetPending()
+        {
+            var responseDeals = new List<DealEntity>();
+            foreach (var deal in Deals)
+            {
+                if (deal.ContractId.IsEmpty())
+                {
+                    responseDeals.Add(deal);
+                }
+            }
+            return responseDeals;
+        }
 
         // GET: api/Deals
         public IList<DealEntity> Get()
@@ -144,15 +160,22 @@ namespace YorsoGettingXbox.Controllers
         public DealEntity Post([FromBody]DealEntity entity)
         {
             entity.Id = NextNum;
-            entity.ContractId = "123123123123123"; // get from Etherium
+            entity.ContractId = ""; // empty
             entity.Documents = new List<DocumentEntity>();
             Deals.Add(entity);
             return entity;
         }
 
-        // PUT: api/Deals/5
-        public void Put(int id, [FromBody]string value)
+        // POST: api/Deals/5
+        public DealEntity PostDeal(int id, [FromBody]DealEntity entity)
         {
+            if (Deals.Count < id || !Deals.Any())
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            Deals[id].ContractId = entity.ContractId;
+            return Deals[id];
         }
 
         // DELETE: api/Deals/5

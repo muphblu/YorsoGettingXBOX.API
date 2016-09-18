@@ -20,9 +20,6 @@ namespace YorsoGettingXbox
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
             json.UseDataContractJsonSerializer = true;
-            /*var xml = GlobalConfiguration.Configuration.Formatters.XmlFormatter;
-            xml.UseXmlSerializer = false;*/
-
         }
     }
 }
