@@ -25,6 +25,13 @@ namespace YorsoGettingXbox.Controllers
         public static IList<DealEntity> Deals = new List<DealEntity>();
         public static int NextNum => _nextNum++;
 
+        private static IList<string> EtherumUsers = new List<string>()
+        {
+            "0x0702f136d69416a2ba7802a9e5bf5561e91c6a79",
+            "0x249171bf442c9981bf4c87f086630c8389aad43b",
+            "0x8e91549f6b3660623bb694f82f3fa6068232967c",
+        };
+
         // GET: api/Deals/pending
         [Route("pending")]
         public IList<DealEntity> GetPending()
@@ -187,6 +194,14 @@ namespace YorsoGettingXbox.Controllers
         public SignInfoEntity Sign(SignInfoEntity signInfoEntity)
         {
             return signInfoEntity;
+        }
+
+        // GET: api/Deals/documents/pending
+        [Route("documents/pending")]
+        public IList<DealEntity> GetPendingDocuments()
+        {
+            var response = new List<DealEntity>();
+            return response;
         }
     }
 }
