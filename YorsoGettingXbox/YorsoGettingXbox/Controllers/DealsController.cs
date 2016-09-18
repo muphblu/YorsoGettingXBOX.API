@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -38,6 +39,10 @@ namespace YorsoGettingXbox.Controllers
         [Route("{id:int}/documents")]
         public IList<DocumentEntity> GetDealDocuments(int id)
         {
+            if (!Deals.Any())
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
             var deal = Deals[id];
             return deal.Documents;
         }
@@ -52,12 +57,26 @@ namespace YorsoGettingXbox.Controllers
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
 
-            var deal = Deals[id];
-            var root = HttpContext.Current.Server.MapPath("~/Files");
-            var provider = new MultipartFormDataStreamProvider(root);
+            if (!Deals.Any())
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            HttpStatusCode resultCode;
+            string resultMessage;
 
             try
             {
+                var deal = Deals[id];
+                var root = HttpContext.Current.Server.MapPath("~/Files");
+                var provider = new MultipartFormDataStreamProvider(root);
+
+                var docNum = 0;
+                if (deal.Documents.Any())
+                {
+                    docNum = deal.Documents.Count;
+                }
+
                 // Read the form data.
                 await Request.Content.ReadAsMultipartAsync(provider);
 
@@ -66,7 +85,7 @@ namespace YorsoGettingXbox.Controllers
                 {
                     var doc = new DocumentEntity()
                     {
-                        Id = 1,
+                        Id = docNum,
                         Name = file.Headers.ContentDisposition.FileName
                     };
                     string fileName;
@@ -83,13 +102,13 @@ namespace YorsoGettingXbox.Controllers
                             }
                             else
                             {
-                                continue; // dont upload files without extension
+                                continue; // don't upload files without extension
                             }
 
-                            doc.Link = "/Files/" + fileName; // just for tests the extension
+                            doc.Link = "/Files/" + fileName;
                         }
                     }
-                    //replace the same file
+                    //replace the same file for the prototype reasons
                     var newFullPath = root + "/" + fileName;
                     if (File.Exists(newFullPath))
                     {
@@ -99,14 +118,18 @@ namespace YorsoGettingXbox.Controllers
                     File.Move(file.LocalFileName, newFullPath);
                     deal.Documents.Add(doc);
                 }
-                var response = Request.CreateResponse(HttpStatusCode.OK);
-                response.Content = new StringContent(new JavaScriptSerializer().Serialize(deal), Encoding.UTF8, "application/json");
-                return response;
+                resultCode = HttpStatusCode.OK;
+                resultMessage = new JavaScriptSerializer().Serialize(deal);
             }
             catch (Exception e)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
+                resultCode = HttpStatusCode.InternalServerError;
+                resultMessage = e.Message + "\nTrace: " + e.StackTrace;
             }
+
+            var response = Request.CreateResponse(resultCode);
+            response.Content = new StringContent(resultMessage, Encoding.UTF8, "application/json");
+            return response;
         }
 
         // POST: api/deals
